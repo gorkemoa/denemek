@@ -635,23 +635,237 @@ canvas {
             color: var(--primary);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
+
+        /* Progress Bar (Editör içinde) */
+        .progress {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 100px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+            min-width: 400px;
+            display: none;
+        }
+
+        .progress.active { 
+            display: block;
+        }
+
+        .progress::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Dil Seçici Modal */
+        .language-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .language-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .language-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 100px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .language-modal-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .language-modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .language-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .language-modal-close:hover {
+            background: #e2e8f0;
+            transform: rotate(90deg);
+        }
+
+        .language-search {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .language-search input {
+            width: 100%;
+            padding: 14px 18px 14px 46px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%2394a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>') no-repeat 16px center;
+        }
+
+        .language-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .language-list {
+            overflow-y: auto;
+            max-height: 400px;
+            padding: 12px;
+        }
+
+        .language-item {
+            padding: 14px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 4px;
+        }
+
+        .language-item:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.05));
+            transform: translateX(4px);
+        }
+
+        .language-item.selected {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+            border: 2px solid var(--primary);
+        }
+
+        .language-item-flag {
+            font-size: 28px;
+            width: 32px;
+            text-align: center;
+        }
+
+        .language-item-info {
+            flex: 1;
+        }
+
+        .language-item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .language-item-code {
+            font-size: 11px;
+            color: var(--text-light);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .language-item-check {
+            font-size: 20px;
+            color: var(--primary);
+            display: none;
+        }
+
+        .language-item.selected .language-item-check {
+            display: block;
+        }
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div class="navbar" style="display: none;">
         <div class="logo">
             <span>🎬</span>
             <span>SubtitleAI</span>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="display: none;">
         <div class="header">
             <h1>AI-Powered Subtitles</h1>
             <p class="subtitle">Upload, transcribe, and customize your video subtitles in minutes</p>
         </div>
 
-        <div id="uploadSection">
+        <div id="uploadSection" style="display: none;">
             <div class="upload-area" id="uploadArea">
                 <div class="upload-icon">📹</div>
                 <div style="font-size: 24px; font-weight: 700; margin: 20px 0 8px;">Drop your video here</div>
@@ -663,15 +877,17 @@ canvas {
             </div>
             <button class="btn-primary hidden" id="processBtn">🤖 Generate AI Subtitles</button>
         </div>
+    </div>
 
-        <div class="progress" id="progress">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText" style="font-weight: 600;">Processing...</p>
+    <!-- Progress Bar (Global, Container Dışında) -->
+    <div class="progress" id="progress">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
         </div>
+        <p id="progressText" style="font-weight: 600; text-align: center; margin: 0;">Processing...</p>
+    </div>
 
-        <div class="video-editor" id="videoEditor">
+    <div class="video-editor" id="videoEditor">
             <div class="editor-topbar">
                 <div class="topbar-left">
                     <div class="topbar-logo">🎬 SubtitleAI</div>
@@ -685,6 +901,10 @@ canvas {
                     <div class="sidebar-tab-icon">🎬</div>
                     <div>Otomatik<br>Alt Yazı</div>
                 </div>
+                <div class="sidebar-tab" data-panel="image">
+                    <div class="sidebar-tab-icon">🖼️</div>
+                    <div>Görsel<br>Ekle</div>
+                </div>
                 <div class="sidebar-tab" data-panel="presets">
                     <div class="sidebar-tab-icon">✨</div>
                     <div>Şablonlar</div>
@@ -697,8 +917,24 @@ canvas {
                     <div class="panel-subtitle">Yapay zeka ile otomatik transkript ve profesyonel stil ayarları</div>
                 </div>
 
+                <!-- Video Yükleme -->
+                <div class="panel-section" id="videoUploadPanel">
+                    <div class="section-title">📹 VİDEO YÜKLE</div>
+                    <div style="border: 2px dashed var(--border); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg-light);" id="videoDropArea">
+                        <div style="font-size: 48px; margin-bottom: 12px;">🎬</div>
+                        <div style="font-weight: 600; margin-bottom: 8px;">Videoyu buraya sürükle</div>
+                        <div style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">veya dosya seçmek için tıkla</div>
+                        <div style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 6px 12px; border-radius: 6px; display: inline-block; font-size: 12px; font-weight: 500;">
+                            MP4, MOV, AVI
+                        </div>
+                    </div>
+                    <input type="file" id="videoInputEditor" accept="video/*" style="display: none;">
+                </div>
+
+                <div class="section-divider" id="transcriptDivider" style="display: none;"></div>
+
                 <!-- AI Transkript -->
-                <div class="panel-section">
+                <div class="panel-section" id="transcriptPanel" style="display: none;">
                     <div class="section-title">🤖 YAPAY ZEKA TRANSKRİPT</div>
                     <button id="transcribeBtn" class="preset-btn" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; margin-bottom: 0;">
                         <div style="display: flex; align-items: center; gap: 12px;">
@@ -707,6 +943,49 @@ canvas {
                                 <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Alt Yazı Oluştur</div>
                                 <div style="font-size: 12px; opacity: 0.95;">OpenAI Whisper ile otomatik transkript</div>
                             </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="section-divider" id="languageDivider" style="display: none;"></div>
+
+                <!-- Çok Dilli Sistem -->
+                <div class="panel-section" id="languageSection" style="display: none;">
+                    <div class="section-title">🌍 ÇOK DİLLİ ALTYAZI</div>
+                    
+                    <!-- Tespit edilen dil -->
+                    <div id="detectedLanguageInfo" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.08)); border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">🎤</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; color: #059669; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Algılanan Dil</div>
+                                <div id="detectedLanguageName" style="font-size: 15px; font-weight: 700; color: var(--text-dark);">Yükleniyor...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dil seçici -->
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label>Hedef Dil Seçin</label>
+                        </div>
+                        <button id="languageSelectorBtn" class="preset-btn" style="background: white; margin-bottom: 0; position: relative;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span id="selectedLangFlag" style="font-size: 28px;">🌐</span>
+                                <div style="text-align: left; flex: 1;">
+                                    <div style="font-weight: 700; font-size: 15px; color: var(--text-dark); margin-bottom: 2px;" id="selectedLangName">Dil Seçin</div>
+                                    <div style="font-size: 11px; color: var(--text-light);">Altyazılar otomatik çevrilecek</div>
+                                </div>
+                                <span style="font-size: 20px; color: var(--text-light);">▼</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Çevir butonu -->
+                    <button id="translateBtn" class="preset-btn" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; margin-top: 12px; display: none;">
+                        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+                            <span style="font-size: 24px;">🔄</span>
+                            <div style="font-weight: 700; font-size: 15px;">Altyazıları Çevir</div>
                         </div>
                     </button>
                 </div>
@@ -850,6 +1129,96 @@ canvas {
             <div class="editor-panel" id="panelText" style="display:none !important;"></div>
             <div class="editor-panel" id="panelStyle" style="display:none !important;"></div>
 
+            <div class="editor-panel" id="panelImage">
+                <div class="panel-header">
+                    <div class="panel-title">🖼️ Görsel Ekleme</div>
+                    <div class="panel-subtitle">Yapay zeka ile arka plan kaldırma ve video üzerine görsel yerleştirme</div>
+                </div>
+
+                <!-- Görsel Yükleme -->
+                <div class="panel-section">
+                    <div class="section-title">📤 GÖRSEL YÜKLE</div>
+                    <div style="border: 2px dashed var(--border); border-radius: 12px; padding: 40px 20px; text-align: center; cursor: pointer; transition: all 0.2s; background: var(--bg-light);" id="imageDropArea">
+                        <div style="font-size: 48px; margin-bottom: 12px;">🖼️</div>
+                        <div style="font-weight: 600; margin-bottom: 8px;">Görseli buraya sürükle</div>
+                        <div style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">veya dosya seçmek için tıkla</div>
+                        <div style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 6px 12px; border-radius: 6px; display: inline-block; font-size: 12px; font-weight: 500;">
+                            PNG, JPG, JPEG
+                        </div>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                </div>
+
+                <!-- Görsel Önizleme -->
+                <div class="panel-section" id="imagePreviewSection" style="display: none;">
+                    <div class="section-title">👁️ ÖNİZLEME</div>
+                    <div style="text-align: center; margin-bottom: 16px;">
+                        <img id="imagePreview" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    </div>
+                    <button id="removeImageBtn" class="preset-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none;">
+                        <div style="display: flex; align-items: center; gap: 12px; justify-content: center;">
+                            <span style="font-size: 20px;">🗑️</span>
+                            <div style="font-weight: 700; font-size: 14px;">Görseli Kaldır</div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="section-divider" id="imageDivider" style="display: none;"></div>
+
+                <!-- AI Arka Plan Kaldırma -->
+                <div class="panel-section" id="removeBackgroundSection" style="display: none;">
+                    <div class="section-title">🤖 YAPAY ZEKA İŞLEME</div>
+                    <button id="removeBgBtn" class="preset-btn" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; margin-bottom: 0;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 28px;">✂️</span>
+                            <div style="text-align: left; flex: 1;">
+                                <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Arka Planı Kaldır</div>
+                                <div style="font-size: 12px; opacity: 0.95;">AI ile otomatik arka plan silme</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="section-divider" id="imageControlsDivider" style="display: none;"></div>
+
+                <!-- Görsel Ayarları -->
+                <div class="panel-section" id="imageControlsSection" style="display: none;">
+                    <div class="section-title">⚙️ GÖRSEL AYARLARI</div>
+                    
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label>Boyut</label>
+                            <span class="value-display"><span id="imageSizeVal">30</span>%</span>
+                        </div>
+                        <input type="range" id="imageSize" min="5" max="100" value="30">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label>Yatay Konum</label>
+                            <span class="value-display"><span id="imageXVal">50</span>%</span>
+                        </div>
+                        <input type="range" id="imageX" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label>Dikey Konum</label>
+                            <span class="value-display"><span id="imageYVal">20</span>%</span>
+                        </div>
+                        <input type="range" id="imageY" min="0" max="100" value="20">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-label">
+                            <label>Opaklık</label>
+                            <span class="value-display"><span id="imageOpacityVal">100</span>%</span>
+                        </div>
+                        <input type="range" id="imageOpacity" min="0" max="100" value="100">
+                    </div>
+                </div>
+            </div>
+
             <div class="editor-panel" id="panelPresets">
                 <div class="panel-header">
                     <div class="panel-title">✨ Profesyonel Şablonlar</div>
@@ -939,8 +1308,14 @@ canvas {
     </div>
 
     <script>
+        // Direkt editör modunda başla
+        document.body.classList.add('editor-mode');
+        document.getElementById('videoEditor').classList.add('active');
+
         const uploadArea = document.getElementById('uploadArea');
         const videoInput = document.getElementById('videoInput');
+        const videoInputEditor = document.getElementById('videoInputEditor');
+        const videoDropArea = document.getElementById('videoDropArea');
         const processBtn = document.getElementById('processBtn');
         const transcribeBtn = document.getElementById('transcribeBtn');
         const progress = document.getElementById('progress');
@@ -957,7 +1332,18 @@ canvas {
 
         let videoFile = null;
         let subtitles = [];
+        let originalSrtContent = '';
+        let detectedLanguage = '';
+        let selectedTargetLanguage = null;
         let isPlaying = false;
+        let uploadedImage = null;
+        let processedImage = null;
+        let imageSettings = {
+            size: 30,
+            x: 50,
+            y: 20,
+            opacity: 100
+        };
         let settings = {
             fontSize: 48,
             textColor: '#FFFFFF',
@@ -972,32 +1358,164 @@ canvas {
             textAlign: 'center'
         };
 
-        // Upload
-        uploadArea.addEventListener('click', () => videoInput.click());
-        uploadArea.addEventListener('dragover', (e) => {
+        // Global Diller Listesi (70+ dil)
+        const languages = [
+            { code: 'ar', name: 'Arapça', nativeName: 'العربية', flag: '🇸🇦' },
+            { code: 'zh', name: 'Çince', nativeName: '中文', flag: '🇨🇳' },
+            { code: 'en', name: 'İngilizce', nativeName: 'English', flag: '🇬🇧' },
+            { code: 'fr', name: 'Fransızca', nativeName: 'Français', flag: '🇫🇷' },
+            { code: 'de', name: 'Almanca', nativeName: 'Deutsch', flag: '🇩🇪' },
+            { code: 'hi', name: 'Hintçe', nativeName: 'हिन्दी', flag: '🇮🇳' },
+            { code: 'it', name: 'İtalyanca', nativeName: 'Italiano', flag: '🇮🇹' },
+            { code: 'ja', name: 'Japonca', nativeName: '日本語', flag: '🇯🇵' },
+            { code: 'ko', name: 'Korece', nativeName: '한국어', flag: '🇰🇷' },
+            { code: 'pt', name: 'Portekizce', nativeName: 'Português', flag: '🇵🇹' },
+            { code: 'ru', name: 'Rusça', nativeName: 'Русский', flag: '🇷🇺' },
+            { code: 'es', name: 'İspanyolca', nativeName: 'Español', flag: '🇪🇸' },
+            { code: 'tr', name: 'Türkçe', nativeName: 'Türkçe', flag: '🇹🇷' },
+            { code: 'af', name: 'Afrikanca', nativeName: 'Afrikaans', flag: '🇿🇦' },
+            { code: 'sq', name: 'Arnavutça', nativeName: 'Shqip', flag: '🇦🇱' },
+            { code: 'am', name: 'Amharca', nativeName: 'አማርኛ', flag: '🇪🇹' },
+            { code: 'hy', name: 'Ermenice', nativeName: 'Հայերեն', flag: '🇦🇲' },
+            { code: 'az', name: 'Azerice', nativeName: 'Azərbaycan', flag: '🇦🇿' },
+            { code: 'eu', name: 'Baskça', nativeName: 'Euskara', flag: '🇪🇸' },
+            { code: 'bn', name: 'Bengalce', nativeName: 'বাংলা', flag: '🇧🇩' },
+            { code: 'bs', name: 'Boşnakça', nativeName: 'Bosanski', flag: '🇧🇦' },
+            { code: 'bg', name: 'Bulgarca', nativeName: 'Български', flag: '🇧🇬' },
+            { code: 'ca', name: 'Katalanca', nativeName: 'Català', flag: '🇪🇸' },
+            { code: 'hr', name: 'Hırvatça', nativeName: 'Hrvatski', flag: '🇭🇷' },
+            { code: 'cs', name: 'Çekçe', nativeName: 'Čeština', flag: '🇨🇿' },
+            { code: 'da', name: 'Danca', nativeName: 'Dansk', flag: '🇩🇰' },
+            { code: 'nl', name: 'Hollandaca', nativeName: 'Nederlands', flag: '🇳🇱' },
+            { code: 'et', name: 'Estonca', nativeName: 'Eesti', flag: '🇪🇪' },
+            { code: 'fi', name: 'Fince', nativeName: 'Suomi', flag: '🇫🇮' },
+            { code: 'ka', name: 'Gürcüce', nativeName: 'ქართული', flag: '🇬🇪' },
+            { code: 'el', name: 'Yunanca', nativeName: 'Ελληνικά', flag: '🇬🇷' },
+            { code: 'gu', name: 'Gujaratice', nativeName: 'ગુજરાતી', flag: '🇮🇳' },
+            { code: 'he', name: 'İbranice', nativeName: 'עברית', flag: '🇮🇱' },
+            { code: 'hu', name: 'Macarca', nativeName: 'Magyar', flag: '🇭🇺' },
+            { code: 'is', name: 'İzlandaca', nativeName: 'Íslenska', flag: '🇮🇸' },
+            { code: 'id', name: 'Endonezce', nativeName: 'Bahasa Indonesia', flag: '🇮🇩' },
+            { code: 'ga', name: 'İrlandaca', nativeName: 'Gaeilge', flag: '🇮🇪' },
+            { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', flag: '🇮🇳' },
+            { code: 'kk', name: 'Kazakça', nativeName: 'Қазақ', flag: '🇰🇿' },
+            { code: 'km', name: 'Kmerce', nativeName: 'ខ្មែរ', flag: '🇰🇭' },
+            { code: 'lv', name: 'Letonca', nativeName: 'Latviešu', flag: '🇱🇻' },
+            { code: 'lt', name: 'Litvanca', nativeName: 'Lietuvių', flag: '🇱🇹' },
+            { code: 'mk', name: 'Makedonca', nativeName: 'Македонски', flag: '🇲🇰' },
+            { code: 'ms', name: 'Malayca', nativeName: 'Bahasa Melayu', flag: '🇲🇾' },
+            { code: 'ml', name: 'Malayalam', nativeName: 'മലയാളം', flag: '🇮🇳' },
+            { code: 'mr', name: 'Marathice', nativeName: 'मराठी', flag: '🇮🇳' },
+            { code: 'mn', name: 'Moğolca', nativeName: 'Монгол', flag: '🇲🇳' },
+            { code: 'ne', name: 'Nepalce', nativeName: 'नेपाली', flag: '🇳🇵' },
+            { code: 'no', name: 'Norveççe', nativeName: 'Norsk', flag: '🇳🇴' },
+            { code: 'fa', name: 'Farsça', nativeName: 'فارسی', flag: '🇮🇷' },
+            { code: 'pl', name: 'Lehçe', nativeName: 'Polski', flag: '🇵🇱' },
+            { code: 'pa', name: 'Pencapça', nativeName: 'ਪੰਜਾਬੀ', flag: '🇮🇳' },
+            { code: 'ro', name: 'Rumence', nativeName: 'Română', flag: '🇷🇴' },
+            { code: 'sr', name: 'Sırpça', nativeName: 'Српски', flag: '🇷🇸' },
+            { code: 'sk', name: 'Slovakça', nativeName: 'Slovenčina', flag: '🇸🇰' },
+            { code: 'sl', name: 'Slovence', nativeName: 'Slovenščina', flag: '🇸🇮' },
+            { code: 'sw', name: 'Svahili', nativeName: 'Kiswahili', flag: '🇰🇪' },
+            { code: 'sv', name: 'İsveççe', nativeName: 'Svenska', flag: '🇸🇪' },
+            { code: 'ta', name: 'Tamilce', nativeName: 'தமிழ்', flag: '🇮🇳' },
+            { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', flag: '🇮🇳' },
+            { code: 'th', name: 'Tayca', nativeName: 'ไทย', flag: '🇹🇭' },
+            { code: 'uk', name: 'Ukraynaca', nativeName: 'Українська', flag: '🇺🇦' },
+            { code: 'ur', name: 'Urduca', nativeName: 'اردو', flag: '🇵🇰' },
+            { code: 'uz', name: 'Özbekçe', nativeName: 'Oʻzbek', flag: '🇺🇿' },
+            { code: 'vi', name: 'Vietnamca', nativeName: 'Tiếng Việt', flag: '🇻🇳' },
+            { code: 'cy', name: 'Galce', nativeName: 'Cymraeg', flag: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
+        ];
+
+        // Dilleri alfabetik sırala
+        languages.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+
+        // Video yükleme (Editör içinde)
+        videoDropArea.addEventListener('click', () => videoInputEditor.click());
+        
+        videoDropArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            uploadArea.style.borderColor = 'var(--primary)';
+            videoDropArea.style.borderColor = 'var(--primary)';
+            videoDropArea.style.background = 'rgba(99, 102, 241, 0.05)';
         });
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = 'var(--border)';
+        
+        videoDropArea.addEventListener('dragleave', () => {
+            videoDropArea.style.borderColor = 'var(--border)';
+            videoDropArea.style.background = 'var(--bg-light)';
         });
-        uploadArea.addEventListener('drop', (e) => {
+        
+        videoDropArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            uploadArea.style.borderColor = 'var(--border)';
+            videoDropArea.style.borderColor = 'var(--border)';
+            videoDropArea.style.background = 'var(--bg-light)';
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('video/')) {
-                videoInput.files = e.dataTransfer.files;
                 handleVideoSelect(file);
             }
         });
-        videoInput.addEventListener('change', (e) => {
+        
+        videoInputEditor.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) handleVideoSelect(file);
         });
 
         function handleVideoSelect(file) {
             videoFile = file;
-            processBtn.classList.remove('hidden');
+            // Video'yu yükle ve önizlemeyi göster
+            video.src = URL.createObjectURL(file);
+            document.getElementById('videoName').textContent = file.name;
+            
+            // Transkript panelini göster
+            document.getElementById('transcriptDivider').style.display = 'block';
+            document.getElementById('transcriptPanel').style.display = 'block';
+            
+            // Video yükleme panelini gizle
+            document.getElementById('videoUploadPanel').style.display = 'none';
+            
+            video.addEventListener('loadedmetadata', () => {
+                // DÜZELTME: Wrapper'ın tam boyutunu alabilmek için kısa bir gecikme
+                setTimeout(() => {
+                    const videoContainer = document.querySelector('.video-container');
+                    const wrapper = document.querySelector('.canvas-wrapper');
+                    
+                    const vidW = video.videoWidth;
+                    const vidH = video.videoHeight;
+                    const aspectRatio = vidW / vidH;
+                    
+                    // Wrapper boyutlarını kontrol et
+                    const maxW = Math.max(wrapper.clientWidth - 40, 800);
+                    const maxH = Math.max(wrapper.clientHeight - 40, 450);
+                    
+                    console.log('Video boyutu:', vidW, 'x', vidH);
+                    console.log('Wrapper boyutu:', maxW, 'x', maxH);
+                    
+                    let finalW, finalH;
+                    if (maxW / maxH > aspectRatio) {
+                        finalH = maxH;
+                        finalW = finalH * aspectRatio;
+                    } else {
+                        finalW = maxW;
+                        finalH = finalW / aspectRatio;
+                    }
+                    
+                    videoContainer.style.width = `${finalW}px`;
+                    videoContainer.style.height = `${finalH}px`;
+                    canvas.width = vidW;
+                    canvas.height = vidH;
+                    timeline.max = video.duration;
+                    
+                    console.log('Container ayarlandı:', finalW, 'x', finalH);
+                    renderLoop();
+                }, 100);
+            });
+            
+            video.addEventListener('timeupdate', () => {
+                timeline.value = video.currentTime;
+                const c = formatTime(video.currentTime);
+                const t = formatTime(video.duration);
+                timeDisplay.textContent = `${c} / ${t}`;
+            });
         }
 
         // Process - Both buttons do the same thing
@@ -1006,7 +1524,14 @@ canvas {
                 alert('Lütfen önce bir video yükleyin!');
                 return;
             }
-            document.getElementById('uploadSection').style.display = 'none';
+            
+            console.log('Transkript başlatılıyor...', videoFile.name);
+            
+            // Transkript butonunu devre dışı bırak
+            transcribeBtn.disabled = true;
+            const originalBtnText = transcribeBtn.innerHTML;
+            transcribeBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 28px;">⏳</span><div style="text-align: left; flex: 1;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">İşleniyor...</div><div style="font-size: 12px; opacity: 0.95;">Lütfen bekleyin</div></div></div>';
+            
             progress.classList.add('active');
             progressFill.style.width = '20%';
             progressText.textContent = 'Yükleniyor...';
@@ -1017,24 +1542,188 @@ canvas {
                 progressFill.style.width = '40%';
                 progressText.textContent = 'Yapay zeka transkript oluşturuyor...';
 
+                console.log('Backend\'e istek gönderiliyor...');
                 const response = await fetch('http://localhost:8002/upload-video/', {
                     method: 'POST',
                     body: formData
                 });
+                
+                console.log('Backend yanıtı alındı:', response.status);
                 const data = await response.json();
+                console.log('JSON verisi:', data);
 
                 if (data.status === 'success') {
+                    originalSrtContent = data.srt_content;
+                    progressFill.style.width = '70%';
+                    progressText.textContent = 'Konuşma dili algılanıyor...';
+                    
+                    // Dil algılama
+                    await detectLanguage(originalSrtContent);
+                    
                     progressFill.style.width = '100%';
                     progressText.textContent = 'Başarılı!';
                     setTimeout(() => {
-                        subtitles = parseSRT(data.srt_content);
-                        loadEditor();
+                        subtitles = parseSRT(originalSrtContent);
+                        showLanguageSection();
+                        progress.classList.remove('active');
+                        transcribeBtn.innerHTML = originalBtnText;
+                        transcribeBtn.disabled = false;
                     }, 500);
                 }
             } catch (error) {
                 alert('Hata: ' + error.message);
+                transcribeBtn.innerHTML = originalBtnText;
+                transcribeBtn.disabled = false;
+                progress.classList.remove('active');
             }
         };
+
+        async function detectLanguage(srtContent) {
+            try {
+                const response = await fetch('http://localhost:8002/detect-language/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ srt_content: srtContent })
+                });
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    detectedLanguage = data.language;
+                    const langInfo = languages.find(l => l.code === detectedLanguage);
+                    if (langInfo) {
+                        document.getElementById('detectedLanguageName').textContent = `${langInfo.flag} ${langInfo.name} (${langInfo.nativeName})`;
+                    }
+                }
+            } catch (error) {
+                console.error('Dil algılama hatası:', error);
+            }
+        }
+
+        function showLanguageSection() {
+            document.getElementById('languageDivider').style.display = 'block';
+            document.getElementById('languageSection').style.display = 'block';
+        }
+
+        // Dil seçici modal işlevleri
+        const languageModal = document.getElementById('languageModal');
+        const languageSelectorBtn = document.getElementById('languageSelectorBtn');
+        const closeLanguageModal = document.getElementById('closeLanguageModal');
+        const languageSearchInput = document.getElementById('languageSearchInput');
+        const languageList = document.getElementById('languageList');
+        const translateBtn = document.getElementById('translateBtn');
+
+        // Dil listesini oluştur
+        function renderLanguages(filterText = '') {
+            const filtered = languages.filter(lang => 
+                lang.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                lang.nativeName.toLowerCase().includes(filterText.toLowerCase()) ||
+                lang.code.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            languageList.innerHTML = filtered.map(lang => `
+                <div class="language-item ${selectedTargetLanguage?.code === lang.code ? 'selected' : ''}" data-code="${lang.code}">
+                    <div class="language-item-flag">${lang.flag}</div>
+                    <div class="language-item-info">
+                        <div class="language-item-name">${lang.name}</div>
+                        <div class="language-item-code">${lang.nativeName} • ${lang.code}</div>
+                    </div>
+                    <div class="language-item-check">✓</div>
+                </div>
+            `).join('');
+
+            // Her dile tıklama eventi ekle
+            document.querySelectorAll('.language-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const code = item.getAttribute('data-code');
+                    selectLanguage(code);
+                });
+            });
+        }
+
+        function selectLanguage(code) {
+            const lang = languages.find(l => l.code === code);
+            if (!lang) return;
+
+            selectedTargetLanguage = lang;
+            
+            // UI'ı güncelle
+            document.getElementById('selectedLangFlag').textContent = lang.flag;
+            document.getElementById('selectedLangName').textContent = lang.name;
+            
+            // Translate butonunu göster
+            translateBtn.style.display = 'block';
+            
+            // Modal'ı kapat
+            languageModal.classList.remove('active');
+            
+            // Arama inputunu temizle
+            languageSearchInput.value = '';
+        }
+
+        // Modal açma/kapama
+        languageSelectorBtn.addEventListener('click', () => {
+            languageModal.classList.add('active');
+            renderLanguages();
+            setTimeout(() => languageSearchInput.focus(), 100);
+        });
+
+        closeLanguageModal.addEventListener('click', () => {
+            languageModal.classList.remove('active');
+        });
+
+        languageModal.addEventListener('click', (e) => {
+            if (e.target === languageModal) {
+                languageModal.classList.remove('active');
+            }
+        });
+
+        // Arama
+        languageSearchInput.addEventListener('input', (e) => {
+            renderLanguages(e.target.value);
+        });
+
+        // Çeviri işlemi
+        translateBtn.addEventListener('click', async () => {
+            if (!selectedTargetLanguage || !originalSrtContent) {
+                alert('Lütfen önce bir dil seçin!');
+                return;
+            }
+
+            const originalText = translateBtn.innerHTML;
+            translateBtn.disabled = true;
+            translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">⏳</span><div style="font-weight: 700; font-size: 15px;">Çevriliyor...</div></div>';
+
+            try {
+                const response = await fetch('http://localhost:8002/translate-srt/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        srt_content: originalSrtContent,
+                        target_language: selectedTargetLanguage.name
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    // Çevrilmiş altyazıları yükle
+                    subtitles = parseSRT(data.translated_srt);
+                    
+                    translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">✅</span><div style="font-weight: 700; font-size: 15px;">Tamamlandı!</div></div>';
+                    
+                    setTimeout(() => {
+                        translateBtn.innerHTML = originalText;
+                        translateBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error(data.message || 'Çeviri başarısız');
+                }
+            } catch (error) {
+                alert('Çeviri hatası: ' + error.message);
+                translateBtn.innerHTML = originalText;
+                translateBtn.disabled = false;
+            }
+        });
 
         processBtn.addEventListener('click', handleTranscribe);
         transcribeBtn.addEventListener('click', handleTranscribe);
@@ -1061,78 +1750,73 @@ canvas {
             }).filter(s => s);
         }
 
-      function loadEditor() {
-    progress.classList.remove('active');
-    document.body.classList.add('editor-mode');
-    videoEditor.classList.add('active');
-    document.getElementById('videoName').textContent = videoFile.name;
-    video.src = URL.createObjectURL(videoFile);
 
-    video.addEventListener('loadedmetadata', () => {
-        const videoContainer = document.querySelector('.video-container');
-        const wrapper = document.querySelector('.canvas-wrapper');
-        
-        // 1. Videonun gerçek boyutlarını ve oranını al
-        const vidW = video.videoWidth;
-        const vidH = video.videoHeight;
-        const aspectRatio = vidW / vidH;
 
-        // 2. Editörün o anki görünen alanını al
-        const maxW = wrapper.clientWidth - 40; // 40px padding payı
-        const maxH = wrapper.clientHeight - 40;
-
-        // 3. En boy oranına göre sığacak en uygun boyutları hesapla
-        let finalW, finalH;
-
-        if (maxW / maxH > aspectRatio) {
-            // Ekran videodan daha geniş (Videonun yüksekliği kısıtlayıcı)
-            finalH = maxH;
-            finalW = finalH * aspectRatio;
-        } else {
-            // Ekran videodan daha dar veya dik (Videonun genişliği kısıtlayıcı)
-            finalW = maxW;
-            finalH = finalW / aspectRatio;
-        }
-
-        // 4. Container boyutunu görsel olarak ayarla
-        videoContainer.style.width = `${finalW}px`;
-        videoContainer.style.height = `${finalH}px`;
-        
-        // 5. Canvas çözünürlüğünü videonun GERÇEK kalitesine eşitle 
-        // (Görüntü bozulmadan yazı yazmak için bu çok önemli)
-        canvas.width = vidW;
-        canvas.height = vidH;
-
-        timeline.max = video.duration;
-        renderLoop();
-    });
-
-    video.addEventListener('timeupdate', () => {
-        timeline.value = video.currentTime;
-        const c = formatTime(video.currentTime);
-        const t = formatTime(video.duration);
-        timeDisplay.textContent = `${c} / ${t}`;
-    });
-}
+        // DÜZELTME: Görsel için global Image objesi (performans için)
+        let imageElement = null;
 
         function renderLoop() {
-            drawSubtitles();
+            drawFrame();
             requestAnimationFrame(renderLoop);
         }
 
-        function drawSubtitles() {
+        function drawFrame() {
             if (!canvas.width) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Önce görseli çiz (alt katman)
+            drawImage();
+            // Sonra altyazıları çiz (üst katman)
+            drawSubtitles();
+        }
+
+        function drawImage() {
+            if (!processedImage || !imageElement) return;
+            
+            // Görsel yüklenmemişse çizme
+            if (!imageElement.complete || imageElement.naturalWidth === 0) return;
+            
+            // Görsel boyutu hesapla
+            const imgWidth = canvas.width * (imageSettings.size / 100);
+            const aspectRatio = imageElement.naturalHeight / imageElement.naturalWidth;
+            const imgHeight = imgWidth * aspectRatio;
+            
+            // Konum hesapla
+            const x = (canvas.width * imageSettings.x / 100) - (imgWidth / 2);
+            const y = (canvas.height * imageSettings.y / 100) - (imgHeight / 2);
+            
+            // Opaklık ayarla
+            ctx.globalAlpha = imageSettings.opacity / 100;
+            
+            // Görseli çiz
+            ctx.drawImage(imageElement, x, y, imgWidth, imgHeight);
+            
+            // Opaklığı sıfırla
+            ctx.globalAlpha = 1;
+        }
+
+        function drawSubtitles() {
             const currentTime = video.currentTime;
             const currentSub = subtitles.find(s => currentTime >= s.start && currentTime <= s.end);
             if (!currentSub) return;
 
             const y = canvas.height * settings.verticalPos / 100;
             ctx.font = `${settings.fontWeight} ${settings.fontSize}px ${settings.fontFamily}`;
-            ctx.textAlign = 'center';
+            // DÜZELTME: textAlign ayarını kullan
+            ctx.textAlign = settings.textAlign;
             ctx.textBaseline = 'middle';
 
             const totalWidth = ctx.measureText(currentSub.text).width;
+            
+            // DÜZELTME: Hizalamaya göre X koordinatını ayarla
+            let startX;
+            if (settings.textAlign === 'left') {
+                startX = 40; // Sol padding
+            } else if (settings.textAlign === 'right') {
+                startX = canvas.width - 40; // Sağ padding
+            } else {
+                startX = canvas.width / 2; // Orta
+            }
             
             // Shadow
             if (settings.shadowBlur > 0) {
@@ -1142,31 +1826,47 @@ canvas {
                 ctx.shadowOffsetY = 2;
             }
 
-            // Background
-            ctx.fillStyle = `rgba(0, 0, 0, ${settings.bgOpacity / 100})`;
-            ctx.fillRect(canvas.width / 2 - totalWidth / 2 - 20, y - settings.fontSize / 2 - 10, totalWidth + 40, settings.fontSize + 20);
+            // Background (sadece center için eski sistem)
+            if (settings.textAlign === 'center') {
+                ctx.fillStyle = `rgba(0, 0, 0, ${settings.bgOpacity / 100})`;
+                ctx.fillRect(canvas.width / 2 - totalWidth / 2 - 20, y - settings.fontSize / 2 - 10, totalWidth + 40, settings.fontSize + 20);
+            }
 
             // Reset shadow for text
             ctx.shadowColor = 'transparent';
             ctx.shadowBlur = 0;
 
-            let x = canvas.width / 2 - totalWidth / 2;
-            currentSub.words.forEach(word => {
-                const isActive = currentTime >= word.start && currentTime <= word.end;
-                const wordWidth = ctx.measureText(word.text).width;
-                const wordX = x + wordWidth / 2;
+            // DÜZELTME: Kelime kelime hizalama
+            if (settings.textAlign === 'center') {
+                let x = canvas.width / 2 - totalWidth / 2;
+                currentSub.words.forEach(word => {
+                    const isActive = currentTime >= word.start && currentTime <= word.end;
+                    const wordWidth = ctx.measureText(word.text).width;
+                    const wordX = x + wordWidth / 2;
 
+                    if (settings.strokeWidth > 0) {
+                        ctx.strokeStyle = settings.strokeColor;
+                        ctx.lineWidth = settings.strokeWidth;
+                        ctx.lineJoin = 'round';
+                        ctx.strokeText(word.text, wordX, y);
+                    }
+
+                    ctx.fillStyle = isActive ? settings.highlightColor : settings.textColor;
+                    ctx.fillText(word.text, wordX, y);
+                    x += ctx.measureText(word.text + ' ').width;
+                });
+            } else {
+                // Sol/Sağ hizalama için basit metin
+                ctx.textAlign = settings.textAlign;
                 if (settings.strokeWidth > 0) {
                     ctx.strokeStyle = settings.strokeColor;
                     ctx.lineWidth = settings.strokeWidth;
                     ctx.lineJoin = 'round';
-                    ctx.strokeText(word.text, wordX, y);
+                    ctx.strokeText(currentSub.text, startX, y);
                 }
-
-                ctx.fillStyle = isActive ? settings.highlightColor : settings.textColor;
-                ctx.fillText(word.text, wordX, y);
-                x += ctx.measureText(word.text + ' ').width;
-            });
+                ctx.fillStyle = settings.textColor;
+                ctx.fillText(currentSub.text, startX, y);
+            }
         }
 
         function formatTime(s) {
@@ -1330,6 +2030,151 @@ canvas {
             });
         });
 
+        // Görsel Yükleme Event Handlers
+        const imageDropArea = document.getElementById('imageDropArea');
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const imagePreviewSection = document.getElementById('imagePreviewSection');
+        const removeBackgroundSection = document.getElementById('removeBackgroundSection');
+        const imageControlsSection = document.getElementById('imageControlsSection');
+        const imageDivider = document.getElementById('imageDivider');
+        const imageControlsDivider = document.getElementById('imageControlsDivider');
+        const removeBgBtn = document.getElementById('removeBgBtn');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        // Görsel yükleme alanına tıklama
+        imageDropArea.addEventListener('click', () => imageInput.click());
+
+        // Drag & Drop
+        imageDropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageDropArea.style.borderColor = 'var(--primary)';
+            imageDropArea.style.background = 'rgba(99, 102, 241, 0.05)';
+        });
+
+        imageDropArea.addEventListener('dragleave', () => {
+            imageDropArea.style.borderColor = 'var(--border)';
+            imageDropArea.style.background = 'var(--bg-light)';
+        });
+
+        imageDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageDropArea.style.borderColor = 'var(--border)';
+            imageDropArea.style.background = 'var(--bg-light)';
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleImageUpload(file);
+            }
+        });
+
+        // Dosya seçme
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) handleImageUpload(file);
+        });
+
+        function handleImageUpload(file) {
+            uploadedImage = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // DÜZELTME: Global Image objesini oluştur
+                imageElement = new Image();
+                imageElement.onload = () => {
+                    console.log('Görsel yüklendi:', imageElement.naturalWidth, 'x', imageElement.naturalHeight);
+                };
+                imageElement.src = e.target.result;
+                
+                imagePreview.src = e.target.result;
+                processedImage = e.target.result;
+                imagePreviewSection.style.display = 'block';
+                removeBackgroundSection.style.display = 'block';
+                imageControlsSection.style.display = 'block';
+                imageDivider.style.display = 'block';
+                imageControlsDivider.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Arka planı kaldır
+        removeBgBtn.addEventListener('click', async () => {
+            if (!uploadedImage) return;
+            
+            const originalText = removeBgBtn.innerHTML;
+            removeBgBtn.disabled = true;
+            removeBgBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 28px;">⏳</span><div style="font-weight: 700; font-size: 15px;">İşleniyor...</div></div>';
+            
+            try {
+                const formData = new FormData();
+                formData.append('file', uploadedImage);
+                
+                const response = await fetch('http://localhost:8002/remove-background/', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = URL.createObjectURL(blob);
+                    
+                    // DÜZELTME: Global Image objesini güncelle
+                    imageElement = new Image();
+                    imageElement.onload = () => {
+                        console.log('Arka plansız görsel yüklendi');
+                    };
+                    imageElement.src = url;
+                    
+                    imagePreview.src = url;
+                    processedImage = url;
+                    removeBgBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px;"><span style="font-size: 28px;">✅</span><div style="text-align: left; flex: 1;"><div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">Tamamlandı!</div><div style="font-size: 12px; opacity: 0.95;">Arka plan kaldırıldı</div></div></div>';
+                    setTimeout(() => {
+                        removeBgBtn.innerHTML = originalText;
+                        removeBgBtn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error('Arka plan kaldırma başarısız');
+                }
+            } catch (error) {
+                alert('Hata: ' + error.message);
+                removeBgBtn.innerHTML = originalText;
+                removeBgBtn.disabled = false;
+            }
+        });
+
+        // Görseli kaldır
+        removeImageBtn.addEventListener('click', () => {
+            uploadedImage = null;
+            processedImage = null;
+            imageElement = null; // DÜZELTME: Image objesini de temizle
+            imagePreview.src = '';
+            imagePreviewSection.style.display = 'none';
+            removeBackgroundSection.style.display = 'none';
+            imageControlsSection.style.display = 'none';
+            imageDivider.style.display = 'none';
+            imageControlsDivider.style.display = 'none';
+            imageInput.value = '';
+        });
+
+        // Görsel ayarları
+        document.getElementById('imageSize').addEventListener('input', (e) => {
+            imageSettings.size = parseInt(e.target.value);
+            document.getElementById('imageSizeVal').textContent = e.target.value;
+        });
+
+        document.getElementById('imageX').addEventListener('input', (e) => {
+            imageSettings.x = parseInt(e.target.value);
+            document.getElementById('imageXVal').textContent = e.target.value;
+        });
+
+        document.getElementById('imageY').addEventListener('input', (e) => {
+            imageSettings.y = parseInt(e.target.value);
+            document.getElementById('imageYVal').textContent = e.target.value;
+        });
+
+        document.getElementById('imageOpacity').addEventListener('input', (e) => {
+            imageSettings.opacity = parseInt(e.target.value);
+            document.getElementById('imageOpacityVal').textContent = e.target.value;
+        });
+
         // Export
         exportBtn.addEventListener('click', async () => {
             exportBtn.disabled = true;
@@ -1374,31 +2219,66 @@ canvas {
 
                 function drawFrame() {
                     recordCtx.drawImage(video, 0, 0, recordCanvas.width, recordCanvas.height);
+                    
+                    // DÜZELTME: Görseli de çiz
+                    if (processedImage && imageElement && imageElement.complete) {
+                        const imgWidth = recordCanvas.width * (imageSettings.size / 100);
+                        const aspectRatio = imageElement.naturalHeight / imageElement.naturalWidth;
+                        const imgHeight = imgWidth * aspectRatio;
+                        const x = (recordCanvas.width * imageSettings.x / 100) - (imgWidth / 2);
+                        const y = (recordCanvas.height * imageSettings.y / 100) - (imgHeight / 2);
+                        recordCtx.globalAlpha = imageSettings.opacity / 100;
+                        recordCtx.drawImage(imageElement, x, y, imgWidth, imgHeight);
+                        recordCtx.globalAlpha = 1;
+                    }
+                    
                     const currentTime = video.currentTime;
                     const currentSub = subtitles.find(s => currentTime >= s.start && currentTime <= s.end);
                     if (currentSub) {
                         const y = recordCanvas.height * settings.verticalPos / 100;
-                        recordCtx.font = `bold ${settings.fontSize}px ${settings.fontFamily}`;
-                        recordCtx.textAlign = 'center';
+                        recordCtx.font = `${settings.fontWeight} ${settings.fontSize}px ${settings.fontFamily}`;
+                        recordCtx.textAlign = settings.textAlign;
                         recordCtx.textBaseline = 'middle';
                         const totalWidth = recordCtx.measureText(currentSub.text).width;
-                        recordCtx.fillStyle = `rgba(0, 0, 0, ${settings.bgOpacity / 100})`;
-                        recordCtx.fillRect(recordCanvas.width / 2 - totalWidth / 2 - 20, y - settings.fontSize / 2 - 10, totalWidth + 40, settings.fontSize + 20);
-                        let x = recordCanvas.width / 2 - totalWidth / 2;
-                        currentSub.words.forEach(word => {
-                            const isActive = currentTime >= word.start && currentTime <= word.end;
-                            const wordWidth = recordCtx.measureText(word.text).width;
-                            const wordX = x + wordWidth / 2;
+                        
+                        // Hizalamaya göre X koordinatı
+                        let startX;
+                        if (settings.textAlign === 'left') {
+                            startX = 40;
+                        } else if (settings.textAlign === 'right') {
+                            startX = recordCanvas.width - 40;
+                        } else {
+                            startX = recordCanvas.width / 2;
+                        }
+                        
+                        if (settings.textAlign === 'center') {
+                            recordCtx.fillStyle = `rgba(0, 0, 0, ${settings.bgOpacity / 100})`;
+                            recordCtx.fillRect(recordCanvas.width / 2 - totalWidth / 2 - 20, y - settings.fontSize / 2 - 10, totalWidth + 40, settings.fontSize + 20);
+                            let x = recordCanvas.width / 2 - totalWidth / 2;
+                            currentSub.words.forEach(word => {
+                                const isActive = currentTime >= word.start && currentTime <= word.end;
+                                const wordWidth = recordCtx.measureText(word.text).width;
+                                const wordX = x + wordWidth / 2;
+                                if (settings.strokeWidth > 0) {
+                                    recordCtx.strokeStyle = settings.strokeColor;
+                                    recordCtx.lineWidth = settings.strokeWidth;
+                                    recordCtx.lineJoin = 'round';
+                                    recordCtx.strokeText(word.text, wordX, y);
+                                }
+                                recordCtx.fillStyle = isActive ? settings.highlightColor : settings.textColor;
+                                recordCtx.fillText(word.text, wordX, y);
+                                x += recordCtx.measureText(word.text + ' ').width;
+                            });
+                        } else {
                             if (settings.strokeWidth > 0) {
-                                recordCtx.strokeStyle = '#000';
+                                recordCtx.strokeStyle = settings.strokeColor;
                                 recordCtx.lineWidth = settings.strokeWidth;
                                 recordCtx.lineJoin = 'round';
-                                recordCtx.strokeText(word.text, wordX, y);
+                                recordCtx.strokeText(currentSub.text, startX, y);
                             }
-                            recordCtx.fillStyle = isActive ? settings.highlightColor : settings.textColor;
-                            recordCtx.fillText(word.text, wordX, y);
-                            x += recordCtx.measureText(word.text + ' ').width;
-                        });
+                            recordCtx.fillStyle = settings.textColor;
+                            recordCtx.fillText(currentSub.text, startX, y);
+                        }
                     }
                     if (!video.ended) requestAnimationFrame(drawFrame);
                 }
@@ -1414,5 +2294,22 @@ canvas {
             }
         });
     </script>
+
+    <!-- Dil Seçici Modal -->
+    <div class="language-modal" id="languageModal">
+        <div class="language-modal-content">
+            <div class="language-modal-header">
+                <div class="language-modal-title">🌍 Dil Seçin</div>
+                <button class="language-modal-close" id="closeLanguageModal">✕</button>
+            </div>
+            <div class="language-search">
+                <input type="text" id="languageSearchInput" placeholder="Dil ara...">
+            </div>
+            <div class="language-list" id="languageList">
+                <!-- Diller JS ile dinamik yüklenecek -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+        
