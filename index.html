@@ -1604,126 +1604,128 @@ canvas {
             document.getElementById('languageSection').style.display = 'block';
         }
 
-        // Dil seçici modal işlevleri
-        const languageModal = document.getElementById('languageModal');
-        const languageSelectorBtn = document.getElementById('languageSelectorBtn');
-        const closeLanguageModal = document.getElementById('closeLanguageModal');
-        const languageSearchInput = document.getElementById('languageSearchInput');
-        const languageList = document.getElementById('languageList');
-        const translateBtn = document.getElementById('translateBtn');
+        // Dil seçici modal işlevleri - DOM yüklendikten sonra çalışacak
+        document.addEventListener('DOMContentLoaded', () => {
+            const languageModal = document.getElementById('languageModal');
+            const languageSelectorBtn = document.getElementById('languageSelectorBtn');
+            const closeLanguageModal = document.getElementById('closeLanguageModal');
+            const languageSearchInput = document.getElementById('languageSearchInput');
+            const languageList = document.getElementById('languageList');
+            const translateBtn = document.getElementById('translateBtn');
 
-        // Dil listesini oluştur
-        function renderLanguages(filterText = '') {
-            const filtered = languages.filter(lang => 
-                lang.name.toLowerCase().includes(filterText.toLowerCase()) ||
-                lang.nativeName.toLowerCase().includes(filterText.toLowerCase()) ||
-                lang.code.toLowerCase().includes(filterText.toLowerCase())
-            );
+            // Dil listesini oluştur
+            function renderLanguages(filterText = '') {
+                const filtered = languages.filter(lang => 
+                    lang.name.toLowerCase().includes(filterText.toLowerCase()) ||
+                    lang.nativeName.toLowerCase().includes(filterText.toLowerCase()) ||
+                    lang.code.toLowerCase().includes(filterText.toLowerCase())
+                );
 
-            languageList.innerHTML = filtered.map(lang => `
-                <div class="language-item ${selectedTargetLanguage?.code === lang.code ? 'selected' : ''}" data-code="${lang.code}">
-                    <div class="language-item-flag">${lang.flag}</div>
-                    <div class="language-item-info">
-                        <div class="language-item-name">${lang.name}</div>
-                        <div class="language-item-code">${lang.nativeName} • ${lang.code}</div>
+                languageList.innerHTML = filtered.map(lang => `
+                    <div class="language-item ${selectedTargetLanguage?.code === lang.code ? 'selected' : ''}" data-code="${lang.code}">
+                        <div class="language-item-flag">${lang.flag}</div>
+                        <div class="language-item-info">
+                            <div class="language-item-name">${lang.name}</div>
+                            <div class="language-item-code">${lang.nativeName} • ${lang.code}</div>
+                        </div>
+                        <div class="language-item-check">✓</div>
                     </div>
-                    <div class="language-item-check">✓</div>
-                </div>
-            `).join('');
+                `).join('');
 
-            // Her dile tıklama eventi ekle
-            document.querySelectorAll('.language-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const code = item.getAttribute('data-code');
-                    selectLanguage(code);
+                // Her dile tıklama eventi ekle
+                document.querySelectorAll('.language-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const code = item.getAttribute('data-code');
+                        selectLanguage(code);
+                    });
                 });
-            });
-        }
+            }
 
-        function selectLanguage(code) {
-            const lang = languages.find(l => l.code === code);
-            if (!lang) return;
+            function selectLanguage(code) {
+                const lang = languages.find(l => l.code === code);
+                if (!lang) return;
 
-            selectedTargetLanguage = lang;
-            
-            // UI'ı güncelle
-            document.getElementById('selectedLangFlag').textContent = lang.flag;
-            document.getElementById('selectedLangName').textContent = lang.name;
-            
-            // Translate butonunu göster
-            translateBtn.style.display = 'block';
-            
-            // Modal'ı kapat
-            languageModal.classList.remove('active');
-            
-            // Arama inputunu temizle
-            languageSearchInput.value = '';
-        }
-
-        // Modal açma/kapama
-        languageSelectorBtn.addEventListener('click', () => {
-            languageModal.classList.add('active');
-            renderLanguages();
-            setTimeout(() => languageSearchInput.focus(), 100);
-        });
-
-        closeLanguageModal.addEventListener('click', () => {
-            languageModal.classList.remove('active');
-        });
-
-        languageModal.addEventListener('click', (e) => {
-            if (e.target === languageModal) {
+                selectedTargetLanguage = lang;
+                
+                // UI'ı güncelle
+                document.getElementById('selectedLangFlag').textContent = lang.flag;
+                document.getElementById('selectedLangName').textContent = lang.name;
+                
+                // Translate butonunu göster
+                translateBtn.style.display = 'block';
+                
+                // Modal'ı kapat
                 languageModal.classList.remove('active');
-            }
-        });
-
-        // Arama
-        languageSearchInput.addEventListener('input', (e) => {
-            renderLanguages(e.target.value);
-        });
-
-        // Çeviri işlemi
-        translateBtn.addEventListener('click', async () => {
-            if (!selectedTargetLanguage || !originalSrtContent) {
-                alert('Lütfen önce bir dil seçin!');
-                return;
+                
+                // Arama inputunu temizle
+                languageSearchInput.value = '';
             }
 
-            const originalText = translateBtn.innerHTML;
-            translateBtn.disabled = true;
-            translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">⏳</span><div style="font-weight: 700; font-size: 15px;">Çevriliyor...</div></div>';
+            // Modal açma/kapama
+            languageSelectorBtn.addEventListener('click', () => {
+                languageModal.classList.add('active');
+                renderLanguages();
+                setTimeout(() => languageSearchInput.focus(), 100);
+            });
 
-            try {
-                const response = await fetch('http://localhost:8002/translate-srt/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        srt_content: originalSrtContent,
-                        target_language: selectedTargetLanguage.name
-                    })
-                });
+            closeLanguageModal.addEventListener('click', () => {
+                languageModal.classList.remove('active');
+            });
 
-                const data = await response.json();
-
-                if (data.status === 'success') {
-                    // Çevrilmiş altyazıları yükle
-                    subtitles = parseSRT(data.translated_srt);
-                    
-                    translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">✅</span><div style="font-weight: 700; font-size: 15px;">Tamamlandı!</div></div>';
-                    
-                    setTimeout(() => {
-                        translateBtn.innerHTML = originalText;
-                        translateBtn.disabled = false;
-                    }, 2000);
-                } else {
-                    throw new Error(data.message || 'Çeviri başarısız');
+            languageModal.addEventListener('click', (e) => {
+                if (e.target === languageModal) {
+                    languageModal.classList.remove('active');
                 }
-            } catch (error) {
-                alert('Çeviri hatası: ' + error.message);
-                translateBtn.innerHTML = originalText;
-                translateBtn.disabled = false;
-            }
-        });
+            });
+
+            // Arama
+            languageSearchInput.addEventListener('input', (e) => {
+                renderLanguages(e.target.value);
+            });
+
+            // Çeviri işlemi
+            translateBtn.addEventListener('click', async () => {
+                if (!selectedTargetLanguage || !originalSrtContent) {
+                    alert('Lütfen önce bir dil seçin!');
+                    return;
+                }
+
+                const originalText = translateBtn.innerHTML;
+                translateBtn.disabled = true;
+                translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">⏳</span><div style="font-weight: 700; font-size: 15px;">Çevriliyor...</div></div>';
+
+                try {
+                    const response = await fetch('http://localhost:8002/translate-srt/', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            srt_content: originalSrtContent,
+                            target_language: selectedTargetLanguage.name
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.status === 'success') {
+                        // Çevrilmiş altyazıları yükle
+                        subtitles = parseSRT(data.translated_srt);
+                        
+                        translateBtn.innerHTML = '<div style="display: flex; align-items: center; gap: 12px; justify-content: center;"><span style="font-size: 24px;">✅</span><div style="font-weight: 700; font-size: 15px;">Tamamlandı!</div></div>';
+                        
+                        setTimeout(() => {
+                            translateBtn.innerHTML = originalText;
+                            translateBtn.disabled = false;
+                        }, 2000);
+                    } else {
+                        throw new Error(data.message || 'Çeviri başarısız');
+                    }
+                } catch (error) {
+                    alert('Çeviri hatası: ' + error.message);
+                    translateBtn.innerHTML = originalText;
+                    translateBtn.disabled = false;
+                }
+            });
+        }); // End of DOMContentLoaded for language modal
 
         processBtn.addEventListener('click', handleTranscribe);
         transcribeBtn.addEventListener('click', handleTranscribe);
